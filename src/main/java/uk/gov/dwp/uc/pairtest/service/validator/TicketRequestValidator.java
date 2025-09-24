@@ -8,7 +8,7 @@ public class TicketRequestValidator {
     public void validate(Long accountId, TicketTypeRequest[] requests) {
         ValidationResult result = isValid(accountId, requests);
         if (!result.isValid()) {
-            throw new InvalidPurchaseException();
+            throw new InvalidPurchaseException(result.message());
         }
     }
 

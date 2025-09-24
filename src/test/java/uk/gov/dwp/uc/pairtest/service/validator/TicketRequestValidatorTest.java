@@ -8,17 +8,18 @@ import uk.gov.dwp.uc.pairtest.exception.InvalidPurchaseException;
 
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static uk.gov.dwp.uc.pairtest.domain.TicketTypeRequest.Type.*;
 
 class TicketRequestValidatorTest {
 
-    private TicketRequestValidator validator  = new TicketRequestValidator();
+    private final TicketRequestValidator validator = new TicketRequestValidator();
 
     //negative ways tests
     @Test
     void shouldThrowExceptionWhenNoAdultWithChildren() {
-        TicketTypeRequest child = new TicketTypeRequest(CHILD,2);
+        TicketTypeRequest child = new TicketTypeRequest(CHILD, 2);
         assertThrows(InvalidPurchaseException.class,
                 () -> validator.validate(1L, new TicketTypeRequest[]{child}));
     }
@@ -44,6 +45,7 @@ class TicketRequestValidatorTest {
         assertThrows(InvalidPurchaseException.class,
                 () -> validator.validate(1L, new TicketTypeRequest[]{adult, child}));
     }
+
     @Test
     void shouldThrowWhenAccountIdIsZero() {
         TicketTypeRequest adult = new TicketTypeRequest(ADULT, 1);

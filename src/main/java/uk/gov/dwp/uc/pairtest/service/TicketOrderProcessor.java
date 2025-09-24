@@ -29,9 +29,7 @@ public class TicketOrderProcessor {
                     totalAmount += req.noOfTickets() * CHILD_PRICE;
                     totalSeats += req.noOfTickets();
                 }
-                case INFANT -> {
-                    // free, no seat
-                }
+                // INFANT - intentionally omitted
             }
         }
 
