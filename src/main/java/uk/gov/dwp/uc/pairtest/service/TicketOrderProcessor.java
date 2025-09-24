@@ -5,12 +5,14 @@ import uk.gov.dwp.uc.pairtest.service.validator.TicketRequestValidator;
 
 public class TicketOrderProcessor {
     private final TicketRequestValidator validator;
+    private final PriceCalculator paymentService;
 
     private static final int ADULT_PRICE = 25;
     private static final int CHILD_PRICE = 15;
 
-    public TicketOrderProcessor(TicketRequestValidator validator) {
+    public TicketOrderProcessor(TicketRequestValidator validator, PriceCalculator paymentService) {
         this.validator = validator;
+        this.paymentService = paymentService;
     }
 
     public TicketCalculationResult process(Long accountId, TicketTypeRequest... requests) {
@@ -22,11 +24,11 @@ public class TicketOrderProcessor {
         for (TicketTypeRequest req : requests) {
             switch (req.type()) {
                 case ADULT -> {
-                    totalAmount += req.noOfTickets() * ADULT_PRICE;
+                    totalAmount += paymentService.calculate(req.noOfTickets(), TicketTypeRequest.Type.ADULT);
                     totalSeats += req.noOfTickets();
                 }
                 case CHILD -> {
-                    totalAmount += req.noOfTickets() * CHILD_PRICE;
+                    totalAmount += paymentService.calculate(req.noOfTickets(), TicketTypeRequest.Type.CHILD);
                     totalSeats += req.noOfTickets();
                 }
                 // INFANT - intentionally omitted

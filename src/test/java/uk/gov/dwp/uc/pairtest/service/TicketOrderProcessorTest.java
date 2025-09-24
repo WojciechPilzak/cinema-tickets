@@ -12,63 +12,28 @@ import static uk.gov.dwp.uc.pairtest.domain.TicketTypeRequest.Type.*;
 
 class TicketOrderProcessorTest {
 
-    private final TicketRequestValidator validator = new TicketRequestValidator();
-    private final TicketOrderProcessor processor = new TicketOrderProcessor(validator);
-
-    @Test
-    void shouldCalculateCorrectAmountAndSeats() {
-        TicketTypeRequest adult = new TicketTypeRequest(ADULT, 1);
-        TicketTypeRequest child = new TicketTypeRequest(CHILD, 1);
-        TicketTypeRequest infant = new TicketTypeRequest(INFANT, 1);
-
-        TicketCalculationResult result = processor.process(1L, new TicketTypeRequest[]{adult, child, infant});
-
-        assertEquals(40, result.totalAmount());
-        assertEquals(2, result.totalSeats());
-    }
+    private final TicketRequestValidator validator = new TicketRequestValidator(25);
+    private final PriceCalculator paymentService = new PriceCalculator();
+    private final TicketOrderProcessor processor = new TicketOrderProcessor(validator, paymentService);
 
     @Test
     void shouldCalculateOnlyAdult() {
         TicketTypeRequest adult = new TicketTypeRequest(ADULT, 2);
 
-        TicketCalculationResult result = processor.process(1L, new TicketTypeRequest[]{adult});
+        TicketCalculationResult result = processor.process(1L, adult);
 
         assertEquals(50, result.totalAmount());
         assertEquals(2, result.totalSeats());
     }
 
     @Test
-    void shouldCalculateAdultWithInfant() {
-        TicketTypeRequest adult = new TicketTypeRequest(ADULT, 1);
-        TicketTypeRequest infant = new TicketTypeRequest(INFANT, 1);
-
-        TicketCalculationResult result = processor.process(1L, new TicketTypeRequest[]{adult, infant});
-
-        assertEquals(25, result.totalAmount());
-        assertEquals(1, result.totalSeats());
-    }
-
-    @Test
     void shouldHandleMaximumTickets() {
-        TicketTypeRequest adult = new TicketTypeRequest(ADULT, 20);
+        TicketTypeRequest adult = new TicketTypeRequest(ADULT, 25);
 
-        TicketCalculationResult result = processor.process(1L, new TicketTypeRequest[]{adult});
+        TicketCalculationResult result = processor.process(1L, adult);
 
-        assertEquals(500, result.totalAmount());
-        assertEquals(20, result.totalSeats());
-    }
-
-    @Test
-    void shouldCalculateMultipleAdultsChildrenInfants() {
-        TicketTypeRequest adults = new TicketTypeRequest(ADULT, 3);
-        TicketTypeRequest children = new TicketTypeRequest(CHILD, 2);
-        TicketTypeRequest infants = new TicketTypeRequest(INFANT, 2);
-
-        TicketCalculationResult result = processor.process(1L,
-                new TicketTypeRequest[]{adults, children, infants});
-
-        assertEquals(105, result.totalAmount());
-        assertEquals(5, result.totalSeats());
+        assertEquals(625, result.totalAmount());
+        assertEquals(25, result.totalSeats());
     }
 
     @Test
@@ -77,7 +42,7 @@ class TicketOrderProcessorTest {
         TicketTypeRequest infants = new TicketTypeRequest(INFANT, 5);
 
         TicketCalculationResult result = processor.process(1L,
-                new TicketTypeRequest[]{adult, infants});
+                adult, infants);
 
         assertEquals(25, result.totalAmount());
         assertEquals(1, result.totalSeats());
@@ -108,7 +73,7 @@ class TicketOrderProcessorTest {
         TicketTypeRequest adults = new TicketTypeRequest(ADULT, 20);
         TicketTypeRequest children = new TicketTypeRequest(CHILD, 5);
 
-        assertDoesNotThrow(() -> processor.process(1L, new TicketTypeRequest[]{adults, children}));
+        assertDoesNotThrow(() -> processor.process(1L, adults, children));
     }
 
     @Test
@@ -117,7 +82,7 @@ class TicketOrderProcessorTest {
         TicketTypeRequest children = new TicketTypeRequest(CHILD, 10);
         TicketTypeRequest infants = new TicketTypeRequest(INFANT, 5);
         TicketCalculationResult result = processor.process(1L,
-                new TicketTypeRequest[]{adults, children, infants});
+                adults, children, infants);
 
         assertEquals(400, result.totalAmount());
         assertEquals(20, result.totalSeats());

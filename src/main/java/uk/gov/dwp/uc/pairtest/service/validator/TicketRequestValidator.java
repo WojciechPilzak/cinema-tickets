@@ -5,6 +5,12 @@ import uk.gov.dwp.uc.pairtest.exception.InvalidPurchaseException;
 
 public class TicketRequestValidator {
 
+    private final int maxTicketsAllowed;
+
+    public TicketRequestValidator(int maxTicketsAllowed) {
+        this.maxTicketsAllowed = maxTicketsAllowed;
+    }
+
     public void validate(Long accountId, TicketTypeRequest[] requests) {
         ValidationResult result = isValid(accountId, requests);
         if (!result.isValid()) {
@@ -30,7 +36,7 @@ public class TicketRequestValidator {
                 return new ValidationResult(false, "Tickets no should be greater than zero");
             }
             totalTickets += request.noOfTickets();
-            if (totalTickets > 25) {
+            if (totalTickets > maxTicketsAllowed) {
                 return new ValidationResult(false, "Too many tickets found");
             }
             switch (request.type()) {

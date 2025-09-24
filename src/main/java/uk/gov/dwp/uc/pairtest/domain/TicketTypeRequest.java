@@ -6,12 +6,19 @@ package uk.gov.dwp.uc.pairtest.domain;
 
 public record TicketTypeRequest(Type type, int noOfTickets) {
 
-    public Type getTicketType() {
-        return type;
-    }
-
     public enum Type {
-        ADULT, CHILD, INFANT
+        ADULT(25),
+        CHILD(15),
+        INFANT(0);
+        private final int price;
+
+        Type(int price) {
+            this.price = price;
+        }
+
+        public int getPrice() {
+            return price;
+        }
     }
 
 }

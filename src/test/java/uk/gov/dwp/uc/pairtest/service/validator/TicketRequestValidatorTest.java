@@ -14,9 +14,8 @@ import static uk.gov.dwp.uc.pairtest.domain.TicketTypeRequest.Type.*;
 
 class TicketRequestValidatorTest {
 
-    private final TicketRequestValidator validator = new TicketRequestValidator();
+    private final TicketRequestValidator validator = new TicketRequestValidator(25);
 
-    //negative ways tests
     @Test
     void shouldThrowExceptionWhenNoAdultWithChildren() {
         TicketTypeRequest child = new TicketTypeRequest(CHILD, 2);
