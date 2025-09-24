@@ -9,6 +9,9 @@ public class TicketRequestValidator {
         if (accountId == null || accountId <= 0) {
             throw new InvalidPurchaseException();
         }
+        if (requests == null || requests.length == 0) {
+            throw new InvalidPurchaseException();
+        }
 
         int totalTickets = 0;
         int adultTickets = 0;
