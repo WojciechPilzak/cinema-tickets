@@ -33,7 +33,7 @@ public class TicketRequestValidator {
             }
         }
 
-        if (totalTickets == 0 || totalTickets > 25) {
+        if (totalTickets == 0) {
             throw new InvalidPurchaseException();
         }
 

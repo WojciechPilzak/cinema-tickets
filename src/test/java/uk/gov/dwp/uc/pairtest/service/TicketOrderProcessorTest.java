@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import uk.gov.dwp.uc.pairtest.domain.TicketTypeRequest;
+import uk.gov.dwp.uc.pairtest.service.validator.TicketRequestValidator;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -11,7 +12,8 @@ import static uk.gov.dwp.uc.pairtest.domain.TicketTypeRequest.Type.*;
 
 class TicketOrderProcessorTest {
 
-    private final TicketOrderProcessor processor = new TicketOrderProcessor();
+    private final TicketRequestValidator validator = new TicketRequestValidator();
+    private final TicketOrderProcessor processor = new TicketOrderProcessor(validator);
 
     @Test
     void shouldCalculateCorrectAmountAndSeats() {
