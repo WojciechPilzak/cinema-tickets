@@ -7,8 +7,9 @@ import org.junit.jupiter.params.provider.ValueSource;
 import uk.gov.dwp.uc.pairtest.domain.TicketTypeRequest;
 import uk.gov.dwp.uc.pairtest.exception.InvalidPurchaseException;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static uk.gov.dwp.uc.pairtest.domain.TicketTypeRequest.Type.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static uk.gov.dwp.uc.pairtest.domain.TicketTypeRequest.Type.ADULT;
 
 class PriceCalculatorTest {
 

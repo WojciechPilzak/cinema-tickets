@@ -20,10 +20,10 @@ public class TicketRequestValidator {
 
     public ValidationResult isValid(Long accountId, TicketTypeRequest[] requests) {
         if (accountId == null || accountId <= 0) {
-            return new ValidationResult(false, "Invalid account id");
+            return ValidationResult.failure("Invalid account id");
         }
         if (requests == null || requests.length == 0) {
-            return new ValidationResult(false, "No ticket requests found");
+            return ValidationResult.failure("No ticket requests found");
         }
 
         int totalTickets = 0;
@@ -33,11 +33,11 @@ public class TicketRequestValidator {
 
         for (TicketTypeRequest request : requests) {
             if (request.noOfTickets() < 0) {
-                return new ValidationResult(false, "Tickets no should be greater than zero");
+                return ValidationResult.failure("Tickets no should be greater than zero");
             }
             totalTickets += request.noOfTickets();
             if (totalTickets > maxTicketsAllowed) {
-                return new ValidationResult(false, "Too many tickets found");
+                return ValidationResult.failure("Too many tickets found");
             }
             switch (request.type()) {
                 case ADULT -> adultTickets += request.noOfTickets();
@@ -47,13 +47,13 @@ public class TicketRequestValidator {
         }
 
         if (totalTickets == 0) {
-            return new ValidationResult(false, "No tickets found");
+            return ValidationResult.failure("No tickets found");
         }
 
         if ((childTickets > 0 || infantTickets > 0) && adultTickets == 0) {
-            return new ValidationResult(false, "No adult tickets found");
+            return ValidationResult.failure("No adult tickets found");
         }
 
-        return new ValidationResult(true, "");
+        return ValidationResult.success();
     }
 }

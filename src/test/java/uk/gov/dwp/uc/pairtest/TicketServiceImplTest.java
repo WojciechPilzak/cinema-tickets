@@ -15,7 +15,7 @@ import uk.gov.dwp.uc.pairtest.exception.InvalidPurchaseException;
 import uk.gov.dwp.uc.pairtest.service.TicketCalculationResult;
 import uk.gov.dwp.uc.pairtest.service.TicketOrderProcessor;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 import static uk.gov.dwp.uc.pairtest.domain.TicketTypeRequest.Type.*;
 

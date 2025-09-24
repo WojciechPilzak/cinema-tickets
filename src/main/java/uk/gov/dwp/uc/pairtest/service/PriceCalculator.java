@@ -17,12 +17,12 @@ public class PriceCalculator {
         }
         switch (ticketType) {
             case ADULT -> {
-                return noOfTickets* TicketTypeRequest.Type.ADULT.getPrice();
+                return noOfTickets * TicketTypeRequest.Type.ADULT.getPrice();
             }
             case CHILD -> {
-                return noOfTickets* TicketTypeRequest.Type.CHILD.getPrice();
+                return noOfTickets * TicketTypeRequest.Type.CHILD.getPrice();
             }
-            case INFANT ->  {
+            case INFANT -> {
                 return 0;
             }
             default -> throw new InvalidPurchaseException("Unsupported ticket type: " + ticketType);

@@ -7,9 +7,6 @@ public class TicketOrderProcessor {
     private final TicketRequestValidator validator;
     private final PriceCalculator paymentService;
 
-    private static final int ADULT_PRICE = 25;
-    private static final int CHILD_PRICE = 15;
-
     public TicketOrderProcessor(TicketRequestValidator validator, PriceCalculator paymentService) {
         this.validator = validator;
         this.paymentService = paymentService;
